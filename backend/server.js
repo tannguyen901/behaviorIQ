@@ -18,14 +18,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post('/api/generate-answer', upload.fields([{ name: 'resume' }, { name: 'jobDescription' }, { name: 'companyInfo' }]), async (req, res) => {
+app.post('/api/generate-answer', upload.single('resume'), async (req, res) => {
   try {
     const question = req.body.question;
-    const resumeFile = req.files.resume[0].path;
-    const jobDescriptionFile = req.files.jobDescription[0].path;
-    const companyInfoFile = req.files.companyInfo[0].path;
+    const resumeFile = req.file.path;
+    const jobDescriptionText = req.body.jobDescriptionText;
+    const companyInfoText = req.body.companyInfoText;
 
-    const answer = await callChatGptApi(question, resumeFile, jobDescriptionFile, companyInfoFile);
+    const answer = await callChatGptApi(question, resumeFile, jobDescriptionText, companyInfoText);
     res.json({ answer });
   } catch (err) {
     console.error(err);
