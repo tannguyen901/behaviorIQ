@@ -20,7 +20,6 @@
     "server": "node server/server.js",
     "dev": "concurrently \"npm run server\" \"npm run start\""
   },
-  
   "eslintConfig": {
     "extends": [
       "react-app",
