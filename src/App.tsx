@@ -4,6 +4,7 @@ import axios from "axios";
 import "./App.css";
 import FileUpload from "./components/FileUpload";
 import TextInput from "./components/TextInput";
+import BQSection from "./components/BQSection";
 
 function App() {
   // State for managing resume, job description, company info, question, and answer
@@ -11,6 +12,9 @@ function App() {
   const [jobDescriptionText, setJobDescriptionText] = useState("");
   const [companyInfoText, setCompanyInfoText] = useState("");
   const [error, setError] = useState("");
+
+  // State for BQSection, control user Input here
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -81,6 +85,10 @@ function App() {
         </div>
         <div className="right-section">
           <h1>test</h1>
+          <BQSection
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
         </div>
       </div>
     </div>
