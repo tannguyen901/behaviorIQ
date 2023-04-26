@@ -1,57 +1,88 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './App.css';
+// Import necessary modules
+import React, { useState } from "react";
+import axios from "axios";
+import "./App.css";
+import FileUpload from "./components/FileUpload";
+import TextInput from "./components/TextInput";
 
 function App() {
+  // State for managing resume, job description, company info, question, and answer
   const [resume, setResume] = useState(null);
-  const [jobDescription, setJobDescription] = useState(null);
-  const [companyInfo, setCompanyInfo] = useState(null);
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
+  const [jobDescriptionText, setJobDescriptionText] = useState("");
+  const [companyInfoText, setCompanyInfoText] = useState("");
+  const [error, setError] = useState("");
 
-  const handleFileChange = (e, setFile) => {
-    setFile(e.target.files[0]);
-  };
-
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('resume', resume);
-    formData.append('jobDescription', jobDescription);
-    formData.append('companyInfo', companyInfo);
-    formData.append('question', question);
+    // Check if resume is uploaded
+    if (!resume) {
+      setError("Please upload a resume.");
+      return;
+    }
 
+    setError(""); // Clear previous error
+
+    // Create FormData object with necessary data
+    const formData = new FormData();
+    formData.append("resume", resume);
+    formData.append("jobDescriptionText", jobDescriptionText);
+    formData.append("companyInfoText", companyInfoText);
+
+    // Make a POST request to the server with the FormData
     try {
-      const response = await axios.post('/api/generate-answer', formData);
-      setAnswer(response.data.answer);
+      const response = await axios.post(
+        "http://localhost:5000/api/generate-answer",
+        formData
+      );
     } catch (err) {
       console.error(err);
     }
   };
 
+  // Render the app
   return (
     <div className="App">
-      <h1>ChatGPT Behavioral Interview</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="resume">Upload Resume</label>
-        <input type="file" id="resume" onChange={(e) => handleFileChange(e, setResume)} />
-        <br />
-        <label htmlFor="jobDescription">Upload Job Description</label>
-        <input type="file" id="jobDescription" onChange={(e) => handleFileChange(e, setJobDescription)} />
-        <br />
-        <label htmlFor="companyInfo">Upload Company Info</label>
-        <input type="file" id="companyInfo" onChange={(e) => handleFileChange(e, setCompanyInfo)} />
-        <br />
-        <label htmlFor="question">Enter a behavioral question</label>
-        <input type="text" id="question" value={question} onChange={(e) => setQuestion(e.target.value)} />
-        <br />
-        <button type="submit">Submit</button>
-      </form>
-      <h2>Question:</h2>
-      <p>{question}</p>
-      <h2>Answer:</h2>
-      <p>{answer}</p>
+      <div className="top-section">
+        <img src="logo.png" alt="Company Logo" className="logo" />
+        <h1>ChatGPT Behavioral Interview</h1>
+        <div className="tips-and-resources">
+          {/* Add tips and resources links here */}
+          <a href="/tips">Tips</a>
+          <a href="/resources" style={{ marginLeft: "10px" }}>
+            Resources
+          </a>
+        </div>
+      </div>
+      <div className="content-wrapper">
+        <div className="left-section">
+          <form onSubmit={handleSubmit}>
+            <FileUpload
+              label="Upload Resume"
+              inputType="file"
+              onChange={(file) => setResume(file)}
+            />
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <br />
+            <TextInput
+              label="Enter Job Description"
+              onChange={(text) => setJobDescriptionText(text)}
+            />
+            <br />
+            <TextInput
+              label="Enter Company Info"
+              onChange={(text) => setCompanyInfoText(text)}
+            />
+            <br />
+            <button type="submit">Submit</button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+          </form>
+        </div>
+        <div className="right-section">
+          <h1>test</h1>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,15 @@
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.text-input {
+  resize: both;
+  display: block;
+  width: 80%; /* Adjust this value to control the width of the textarea */
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
