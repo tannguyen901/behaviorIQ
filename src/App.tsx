@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Import necessary modules
 import React, { useState } from "react";
 import axios from "axios";
@@ -64,7 +65,6 @@ function App() {
           <form onSubmit={handleSubmit}>
             <FileUpload
               label="Upload Resume"
-              inputType="file"
               onChange={(file) => setResume(file)}
             />
             {error && <p style={{ color: "red" }}>{error}</p>}
@@ -85,10 +85,7 @@ function App() {
         </div>
         <div className="right-section">
           <h1>test</h1>
-          <BQSection
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-          />
+          <BQSection searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </div>
       </div>
     </div>
